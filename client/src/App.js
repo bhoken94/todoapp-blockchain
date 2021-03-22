@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import TodoList from './contracts/TodoList.json';
+import TodoListContract from './contracts/TodoList.json';
 import getWeb3 from './getWeb3';
-import Navbar from 'react-bootstrap/Navbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NavigationBar from './components/NavigationBar';
+import TodoList from './components/TodoList';
 
 class App extends Component {
   state = { web3: null, accounts: null, contract: null };
@@ -21,8 +20,8 @@ class App extends Component {
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = TodoList.networks[networkId];
-      const instance = new web3.eth.Contract(TodoList.abi, deployedNetwork && deployedNetwork.address);
+      const deployedNetwork = TodoListContract.networks[networkId];
+      const instance = new web3.eth.Contract(TodoListContract.abi, deployedNetwork && deployedNetwork.address);
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
@@ -39,13 +38,10 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <Navbar bg="dark" variant="dark" className="d-flex justify-content-between">
-        <Navbar.Brand href="#home">
-          <FontAwesomeIcon icon={faEthereum} />
-          Todo App
-        </Navbar.Brand>
-        <div className="text-white">{this.state.accounts[0]}</div>
-      </Navbar>
+      <>
+        <NavigationBar account={this.state.accounts[0]}></NavigationBar>
+        <TodoList></TodoList>
+      </>
     );
   }
 }
