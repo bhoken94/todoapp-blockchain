@@ -8,6 +8,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
+    "@truffle/contract": "^4.3.11",
     "bootstrap": "^4.6.0",
     "react": "16.11.0",
     "react-bootstrap": "^1.5.2",

@@ -12,6 +12,18 @@ contract TodoList {
     bool completed;
   }
 
+  //Definizione di un evento
+   event TaskCreated(
+    uint id,
+    string content,
+    bool completed
+  );
+
+  event TaskCompleted(
+    uint id,
+    bool completed
+  );
+
   //Variabile che conserverà la lista di task sulla blockchain. Mapping è key=>value
   mapping(uint => Task) public taskList;
 
@@ -29,6 +41,16 @@ contract TodoList {
     taskCount ++;
     //Creo un nuovo task
     taskList[taskCount] = Task(taskCount, _content, false);
+    // Quando creo un nuovo task emetto TaskCreated event
+    emit TaskCreated(taskCount, _content, false);
+  }
+
+  // Metodo per settare task come completato
+  function toggleCompleted(uint _id) public {
+    Task memory _task = taskList[_id];
+    _task.completed = !_task.completed;
+    taskList[_id] = _task;
+    emit TaskCompleted(_id, _task.completed);
   }
 
 }
