@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 
 export default class NavigationBar extends Component {
   constructor(props) {
@@ -13,7 +11,7 @@ export default class NavigationBar extends Component {
     return (
       <Navbar bg="dark" variant="dark" className="d-flex justify-content-between">
         <Navbar.Brand href="#home">
-          <FontAwesomeIcon icon={faEthereum} className="mr-3" />
+          <img className="mr-3" width="20px" height="30px" src={process.env.PUBLIC_URL + 'logo.png'} alt="Logo"></img>
           Todo App
         </Navbar.Brand>
         <div className="text-white">{this.state.account}</div>
