@@ -8,12 +8,12 @@ export class TodoList extends Component {
     this.state = { content: '', tasks: [] };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getTaskList = this.getTaskList.bind(this);
   }
 
   componentDidMount = async () => {
     try {
       await this.getTaskList();
-      console.log(this.state.tasks);
     } catch (error) {
       alert("Can't render task");
     }
@@ -50,7 +50,7 @@ export class TodoList extends Component {
         </form>
         <ul id="taskList" className="list-unstyled">
           {this.state.tasks.map((task, key) => (
-            <Task key={key} task={task}></Task>
+            <Task key={key} task={task} contract={this.props.contract} account={this.props.account}></Task>
           ))}
         </ul>
         <ul id="completedTaskList" className="list-unstyled"></ul>

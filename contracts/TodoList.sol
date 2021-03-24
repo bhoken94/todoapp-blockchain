@@ -24,6 +24,11 @@ contract TodoList {
     bool completed
   );
 
+  event TaskModified(
+    uint id,
+    string newContent
+  );
+
   //Variabile che conserverà la lista di task sulla blockchain. Mapping è key=>value
   mapping(uint => Task) public taskList;
 
@@ -51,6 +56,14 @@ contract TodoList {
     _task.completed = !_task.completed;
     taskList[_id] = _task;
     emit TaskCompleted(_id, _task.completed);
+  }
+
+  // METODI CUSTOM MIEI
+  function editTask(uint _id,string memory _newContent) public {
+    Task memory _task = taskList[_id];
+    _task.content = _newContent;
+    taskList[_id] = _task;
+    emit TaskModified(_id,_newContent);
   }
 
 }
