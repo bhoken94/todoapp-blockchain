@@ -40,4 +40,13 @@ contract('TodoList', (accounts) => {
     assert.equal(event.id.toNumber(), 1);
     assert.equal(event.newContent, 'Task edit');
   });
+
+  it('delete task', async () => {
+    const result = await this.todoList.deleteTask(1);
+    const taskCount = await this.todoList.taskCount();
+    const taskList = await this.todoList.taskList(taskCount);
+    assert.equal(taskCount, 1);
+    const event = result.logs[0].args;
+    assert.equal(event.id.toNumber(), 1);
+  });
 });

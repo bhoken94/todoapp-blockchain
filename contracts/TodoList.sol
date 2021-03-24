@@ -29,6 +29,10 @@ contract TodoList {
     string newContent
   );
 
+  event TaskDeleted(
+    uint id
+  );
+
   //Variabile che conserverà la lista di task sulla blockchain. Mapping è key=>value
   mapping(uint => Task) public taskList;
 
@@ -64,6 +68,14 @@ contract TodoList {
     _task.content = _newContent;
     taskList[_id] = _task;
     emit TaskModified(_id,_newContent);
+  }
+
+  function deleteTask(uint _id) public {
+    // Cancello l'entry dal mapping
+    delete taskList[_id];
+    // Elimino la key che fa riferimento al entry eliminata
+    taskCount --;
+    emit TaskDeleted(_id);
   }
 
 }

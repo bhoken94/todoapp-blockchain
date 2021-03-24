@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import TodoListContract from './contracts/TodoList.json';
 import getWeb3 from './adapters/getWeb3';
 import Spinner from 'react-bootstrap/Spinner';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationBar from './components/NavigationBar';
 import TodoList from './components/TodoList';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { web3: null, accounts: null, contract: null };
+    this.state = { web3: null, accounts: null, contract: null, tasks: [] };
   }
 
   componentDidMount = async () => {
@@ -25,10 +28,16 @@ class App extends Component {
       const instance = new web3.eth.Contract(TodoListContract.abi, deployedNetwork && deployedNetwork.address);
       // Set web3, accounts, and contract to the state
       //Get List of tasks from blockChain and set in the component state
+      const taskCount = await instance.methods.taskCount().call();
+      for (var i = 1; i <= taskCount; i++) {
+        // Fetch the task data from the blockchain
+        const task = await instance.methods.taskList(i).call();
+        this.setState({ tasks: [...this.state.tasks, task] });
+      }
       this.setState({ web3, accounts, contract: instance });
     } catch (error) {
       // Catch any errors for any of the above operations.
-      alert(`Failed to load web3, accounts, or contract. Check console for details.`);
+      toast.error("🦊 Scarica MetaMask per usare l'app!");
       console.error(error);
     }
   };
@@ -43,9 +52,10 @@ class App extends Component {
     }
     return (
       <>
-        <NavigationBar account={this.state.accounts[0]}></NavigationBar>
+        <ToastContainer />
+        <NavigationBar account={this.state.accounts[0]} />
         <div className="todo-app">
-          <TodoList contract={this.state.contract} account={this.state.accounts[0]}></TodoList>
+          <TodoList tasks={this.state.tasks} contract={this.state.contract} account={this.state.accounts[0]} />
         </div>
       </>
     );
